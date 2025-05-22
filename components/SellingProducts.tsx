@@ -1,22 +1,40 @@
-import { decreaseSellQuantity, deleteSellProducts, increaseSellQuantity, ProductTypes, } from "@/redux/productSlice"
+import { getAllData, updateData } from "@/createAsyncthunk/createAsyncthunk"
+import { addSoldProducts, decreaseSellQuantity, deleteSellProducts, increaseSellQuantity, ProductTypes, updateProductsQuantity, } from "@/redux/productSlice"
 import { AppDispatch, RootState } from "@/redux/store"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 const SellingProducts : React.FC = () => {
-    const {sellItems, } = useSelector((store : RootState) => store.products)
+    const {products, sellItems} = useSelector((store : RootState) => store.products)
     const dispatch = useDispatch<AppDispatch>()
 
+    useEffect(() => {
+        dispatch(getAllData())
+    }, [dispatch])
 
     const handleSellItems = (item : ProductTypes) => {
+        const findUpdateProduct = products.find((element) => element._id === item._id)
+        const soldProductDetails = {
+            _id : item._id,
+            productName : item.productName,
+            quantity : item.quantity,
+            price : item.price,
+        }
         
-        console.log('item current modified', item)
+        if (findUpdateProduct) {
+            dispatch(updateProductsQuantity(soldProductDetails))
+            dispatch(updateData({...item, id : item._id, quantity : findUpdateProduct.quantity - item.quantity}))
+        }
+        dispatch(addSoldProducts({...soldProductDetails, price : item.quantity * item.price}))
+        dispatch(deleteSellProducts(item._id))
     }
-
-    console.log('sell item ',sellItems)
 
     return (
         <>
             <div className="max-w-[1200px] mx-auto">
+                <div className="mb-[12px]">
+                    <h1 className="text-[22px] text-center">--- Selling Products ---</h1>
+                </div>
                 <table className="w-full border border-collapse">
                     <thead>
                         <tr className="[&>th]:border [&>th]:p-[4px_8px]">
@@ -82,7 +100,7 @@ const SellingProducts : React.FC = () => {
                             ) : (
                                 <tr>
                                     <td colSpan={5}>
-                                        <span className="inline-block w-full text-[20px] text-center">No Products</span>
+                                        <span className="inline-block w-full py-2.5 text-[20px] text-center">No Products</span>
                                     </td>
                                 </tr>
                             )

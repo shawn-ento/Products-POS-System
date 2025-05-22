@@ -5,6 +5,20 @@ import { AppDispatch, RootState } from "@/redux/store"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 
+const stockMessage = (value : number) : string => {
+    let message = ''
+    if (value === 0) {
+        message = 'Out of stock'
+    }
+    else if (value <= 10) {
+        message = 'Low stock'
+    }
+    else if (value > 10) {
+        message = 'In stock'
+    }
+    return message
+}
+
 const Products = () => {
     const productsData = useSelector((store : RootState) => store.products)
     const dispatch = useDispatch<AppDispatch>()
@@ -57,7 +71,10 @@ const Products = () => {
                                     <h1 className="font-semibold text-gray-400">Product Description:</h1>
                                     <p className="text-left text-[18px] my-[3px]">{items.description}</p>
                                     <h1 className="font-semibold text-gray-400">Product Quantity:</h1>
-                                    <p className={`text-center text-[18px] ${items.quantity <= 5 ? 'text-red-500' : ''}`}>{items.quantity}</p>
+                                    <p className={`text-center text-[18px] flex items-center gap-[7px] justify-center`}>
+                                        {items.quantity}
+                                        <span className={`border text-[13px] ${items.quantity === 0 ? 'text-amber-400' : items.quantity <= 10 ? 'text-red-700' : items.quantity > 10 ? 'text-blue-800' : ''} p-[2px_3px] rounded-full`}>{stockMessage(items.quantity)}</span>
+                                    </p>
                                     <h1 className="font-semibold text-gray-400">Price:</h1>
                                     <p className="text-center text-[18px]">{items.price}</p>
                                     <div className="mt-auto">

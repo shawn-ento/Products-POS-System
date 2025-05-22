@@ -76,7 +76,7 @@ const AllProducts : React.FC = () => {
                                             </td>
                                             <td>
                                                 <div className="flex items-center justify-center">
-                                                    <span className="text-[18px]">{item.price}</span>
+                                                    <span className="text-[18px]">{item.price.toFixed(2)}$</span>
                                                 </div>
                                             </td>
                                             <td>

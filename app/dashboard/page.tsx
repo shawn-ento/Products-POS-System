@@ -6,8 +6,9 @@ import SellingProducts from "@/components/SellingProducts";
 import { useState } from "react"
 import ManageProducts from "@/components/ManageProducts";
 import AllProducts from "@/components/AllProducts";
+import SaleReport from "@/components/SaleReport";
 
-type Tabtypes = 'home' | 'add_product' | 'manage_product' | 'selling_products' | 'generate_receipt' | 'All_Products';
+type Tabtypes = 'home' | 'add_product' | 'manage_product' | 'selling_products' | 'sale_report' | 'All_Products';
 
 const Admin : React.FC = () => {
     const [tab, settab] = useState<Tabtypes>('home')
@@ -52,11 +53,11 @@ const Admin : React.FC = () => {
                                 onClick={() => handleActiveTab('selling_products')}
                             >Selling Products</button>
                         </li>
-                        <li className={`${tab === 'generate_receipt' ? 'before:opacity-80' : 'before:opacity-0'}`}>
+                        <li className={`${tab === 'sale_report' ? 'before:opacity-80' : 'before:opacity-0'}`}>
                             <button
-                                className={`cursor-pointer ${tab === 'generate_receipt' ? 'bg-blue-900' : ''} p-[3px_12px] w-full text-left text-[18px] rounded-[10px]`}
-                                onClick={() => handleActiveTab('generate_receipt')}
-                            >Generate Receipt</button>
+                                className={`cursor-pointer ${tab === 'sale_report' ? 'bg-blue-900' : ''} p-[3px_12px] w-full text-left text-[18px] rounded-[10px]`}
+                                onClick={() => handleActiveTab('sale_report')}
+                            >Sale Report</button>
                         </li>
                     </ul>
                 </div>
@@ -82,8 +83,8 @@ const Admin : React.FC = () => {
                         )
                     }
                     {
-                        tab === 'generate_receipt' && (
-                            <h1>generate recippt</h1>
+                        tab === 'sale_report' && (
+                            <SaleReport/>
                         )
                     }
                     {

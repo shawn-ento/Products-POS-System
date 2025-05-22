@@ -38,7 +38,7 @@ const initialState : ProductState = {
     products : [],
     cartItems : typeof window !== 'undefined' ? getLocalStorageData('cartItems') : [],
     sellItems : typeof window !== 'undefined' ? getLocalStorageData('sellItems') : [],
-    soldItems : [],
+    soldItems : typeof window !== 'undefined' ? getLocalStorageData('soldItems') : [],
     loading : false
 }
 
@@ -125,6 +125,30 @@ const productSlice = createSlice({
             })
             state.sellItems = removeSellProducts
             localStorage.setItem('sellItems', JSON.stringify(removeSellProducts))
+        },
+        addSoldProducts : (state, action : PayloadAction<CartTypes>) => {
+            const isProductContains = state.soldItems.some((item) => item._id === action.payload._id)
+            if (!isProductContains) {
+                state.soldItems.push(action.payload)
+            }
+            localStorage.setItem('soldItems', JSON.stringify(state.soldItems))
+        },
+        updateProductsQuantity : (state, action: PayloadAction<CartTypes>) => {
+            state.products = state.products.map((item) => {
+                return item._id === action.payload._id ?
+                {
+                    ...item,
+                    quantity : item.quantity - action.payload.quantity
+                } :
+                item
+            })
+        },
+        deleteSoldProducts : (state, action : PayloadAction<string>) => {
+            const filterSoldProducts = state.soldItems.filter((item) => item._id !== action.payload)
+            if (filterSoldProducts) {
+                state.soldItems = filterSoldProducts
+                localStorage.setItem('soldItems', JSON.stringify(filterSoldProducts))
+            }
         }
     },
     extraReducers : (builder) => {
@@ -152,6 +176,9 @@ export const {
         increaseSellQuantity,
         decreaseSellQuantity,
         addSellProducts,
-        deleteSellProducts
+        deleteSellProducts,
+        addSoldProducts,
+        updateProductsQuantity,
+        deleteSoldProducts
     } = productSlice.actions
 export default productSlice.reducer

@@ -189,7 +189,7 @@ const ManageProducts : React.FC = () => {
                                                                 name="price"
                                                             />
                                                         ) : (
-                                                            <span className="text-[18px]">{items.price}</span>
+                                                            <span className="text-[18px]">{items.price.toFixed(2)}$</span>
                                                         )
                                                     }
                                                 </div>
