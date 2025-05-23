@@ -2,6 +2,7 @@
 import { deleteSoldProducts } from "@/redux/productSlice"
 import { AppDispatch, RootState } from "@/redux/store"
 import { useDispatch, useSelector } from "react-redux"
+import GenerateProductReceipt from "./GenerateProductReceipt"
 
 const SaleReport = () => {
     const {soldItems} = useSelector((store : RootState) => store.products)
@@ -11,10 +12,6 @@ const SaleReport = () => {
         return acc  + elem.price
     }, 0)
 
-    const handleGenerateReceipt = () => {
-        console.log('clciked')
-    }
-
     console.log(soldItems)
     return (
         <>
@@ -23,10 +20,7 @@ const SaleReport = () => {
                     <h1 className="text-center text-[22px]">--- Products Sale Report ---</h1>
                     <div className="flex justify-between items-center mt-[10px]">
                         <h3 className="text-[19px] font-semibold">Generate Products Receipt</h3>
-                        <button
-                            className="p-[4px_12px] text-[17px] bg-gradient-to-r from-blue-900 to-blue-800 text-white font-bold rounded-[10px] transition duration-300 ease-in-out cursor-pointer hover:from-blue-900 hover:to-blue-600 hover:shadow-lg focus:outline-none"
-                            onClick={handleGenerateReceipt}
-                        >Generate Receipt</button>
+                        <GenerateProductReceipt/>
                     </div>
                 </div>
                 <table className="w-full">
